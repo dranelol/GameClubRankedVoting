@@ -12,6 +12,12 @@ namespace GameClubRankedVoting
         static List<string> gameListing = new List<string>();
 
         static List<int[]> votes = new List<int[]>();
+
+        static Dictionary<int, int> results = new Dictionary<int, int>();
+
+        static bool finished = false;
+
+        static int result = 0;
         //bepis
         static void Main(string[] args)
         {
@@ -52,15 +58,55 @@ namespace GameClubRankedVoting
 
             voteList.Close();
 
-            Console.ReadLine();
-
             //call looping RCV algorithm
+            int rank = 0;
+            while(finished == false)
+            {
+                RCV();
+
+                rank++;
+            }
             //print result
+            Console.WriteLine(result);
+            Console.ReadLine();
         }
 
-        void RCV()
+        static void RCV()
         {
+            int[] results = new int[gameListing.Count];
 
+            float majorityFlt = ((float)gameListing.Count / 2.0f);
+
+            int majority = (int)Math.Ceiling(majorityFlt);
+
+            foreach(int[] vote in votes)
+            {
+                results[vote[0]]++;
+                int check = results[vote[0]];
+                
+                
+                if(check >= majority)
+                {
+                    finished = true;
+
+                    result = vote[0];
+
+                    return;
+                }
+            }
+
+            if(finished == false)
+            {
+                foreach(int result in results)
+                {
+                    Console.WriteLine(result);
+                }
+
+                Console.ReadLine();
+                // nobody got the majority, eliminate the lowest and reassign their votes
+
+
+            }
         }
     }
 }
