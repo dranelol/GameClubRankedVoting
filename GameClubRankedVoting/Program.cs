@@ -62,13 +62,29 @@ namespace GameClubRankedVoting
             int rank = 0;
             while(finished == false)
             {
+                printVotes();
+                Console.ReadLine();
                 RCV();
-
                 rank++;
             }
-            //print result
-            Console.WriteLine(result);
+
+            Console.WriteLine(gameListing[result]);
+
             Console.ReadLine();
+        }
+
+        static void printVotes()
+        {
+            int count = 0;
+            foreach (int[] vote in votes)
+            {
+                Console.WriteLine("Voter: " + count);
+                Console.WriteLine("1: " + vote[0]);
+                Console.WriteLine("2: " + vote[1]);
+                Console.WriteLine("3: " + vote[2]);
+
+                count++;
+            }
         }
 
         static void RCV()
@@ -97,14 +113,45 @@ namespace GameClubRankedVoting
 
             if(finished == false)
             {
-                foreach(int result in results)
+                // nobody got the majority,  reassign their votes and eliminate the lowest
+
+                int lowest = int.MaxValue;
+
+                int lowestIndex = 0;
+
+                for(int i = 0; i < results.Length; i++)
                 {
-                    Console.WriteLine(result);
+                    if(gameListing[i] != "-1")
+                    {
+
+                        if (results[i] < lowest)
+                        {
+                            lowest = results[i];
+                            lowestIndex = i;
+                        }
+                    }
                 }
 
-                Console.ReadLine();
-                // nobody got the majority, eliminate the lowest and reassign their votes
+                // loop through the votes
+                //  if anyone voted the lowest candidate first, shift their second-place vote to first-place
+                //  if anyone voted the lowest candidate second, shift their third-place vote to second-place
 
+                
+                foreach (int[] vote in votes)
+                {
+                    if(vote[0] == lowestIndex)
+                    {
+                        vote[0] = vote[1];
+                    }
+
+                    if (vote[1] == lowestIndex)
+                    {
+                        vote[1] = vote[2];
+                    }
+                }
+
+                // finally, eliminate the lowest from the list
+                gameListing[lowestIndex] = "-1";
 
             }
         }

@@ -1,5 +1,5 @@
-1:Bastion
-2:Transistor
-3:Diablo 3
-4:Nier Automata
-5:Dynasty Warriors 7
+0:Bastion
+1:Transistor
+2:Diablo 3
+3:Nier Automata
+4:Dynasty Warriors 7
